@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, Date
 from .database import Base
 
 class Salary(Base):
@@ -6,7 +6,7 @@ class Salary(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     amount = Column(Float, nullable=False)
-    effective_date = Column(String, nullable=False)
+    effective_date = Column(Date, nullable=False, index=True)
     notes = Column(String, nullable=True)
 
 class Promotion(Base):
@@ -14,5 +14,5 @@ class Promotion(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String, nullable=False)
-    promotion_date = Column(String, nullable=False)
+    promotion_date = Column(Date, nullable=False, index=True)
     notes = Column(String, nullable=True)
