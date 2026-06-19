@@ -39,3 +39,10 @@ class DashboardResponse(BaseModel):
     promotion_count: int
     years_worked: Optional[int]
 
+class ForecastResponse(BaseModel):
+    current_salary: Optional[float] = None
+    average_nominal_increase: Optional[float] = None
+    forecast_1_year: Optional[float] = None
+    forecast_2_year: Optional[float] = None
+    forecast_3_year: Optional[float] = None
+

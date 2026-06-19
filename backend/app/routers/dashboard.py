@@ -12,3 +12,8 @@ router = APIRouter(
 @router.get("/", response_model=schemas.DashboardResponse)
 def get_dashboard(db: Session = Depends(get_db)):
     return crud.get_dashboard_metrics(db)
+
+@router.get("/forecast", response_model=schemas.ForecastResponse)
+def get_salary_forecast(db: Session = Depends(get_db)):
+    return crud.get_forecast(db)
+
