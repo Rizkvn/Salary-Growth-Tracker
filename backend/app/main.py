@@ -5,7 +5,7 @@ from sqlalchemy import text
 from . import models, schemas, auth
 from .database import engine, get_db
 from .config import settings
-from .routers import salaries, promotions
+from .routers import salaries, promotions, dashboard
 
 # Create database tables automatically during startup
 models.Base.metadata.create_all(bind=engine)
@@ -14,6 +14,7 @@ app = FastAPI(title="Salary Growth Tracker API")
 
 app.include_router(salaries.router)
 app.include_router(promotions.router)
+app.include_router(dashboard.router)
 
 @app.get("/")
 def read_root():

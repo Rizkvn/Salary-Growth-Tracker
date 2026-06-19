@@ -32,3 +32,10 @@ class PromotionCreate(PromotionBase):
 class PromotionResponse(PromotionBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
+
+class DashboardResponse(BaseModel):
+    current_salary: Optional[float]
+    salary_growth: Optional[float]
+    promotion_count: int
+    years_worked: Optional[int]
+

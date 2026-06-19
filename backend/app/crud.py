@@ -1,3 +1,4 @@
+from datetime import date
 from sqlalchemy.orm import Session
 from . import models, schemas
 
@@ -44,4 +45,46 @@ def delete_promotion(db: Session, promotion_id: int):
     db.delete(db_promotion)
     db.commit()
     return True
+
+def get_dashboard_metrics(db: Session):
+    today = date.today()
+    
+    # 1. Current Salary
+    current_salary_record = db.query(models.Salary).filter(
+        models.Salary.effective_date <= today
+    ).order_by(
+        models.Salary.effective_date.desc(),
+        models.Salary.id.desc()
+    ).first()
+    
+    current_salary = current_salary_record.amount if current_salary_record else None
+    
+    # 2. Earliest Salary
+    earliest_salary_record = db.query(models.Salary).order_by(
+        models.Salary.effective_date.asc(),
+        models.Salary.id.asc()
+    ).first()
+    
+    salary_growth = None
+    years_worked = None
+    
+    if earliest_salary_record is not None:
+        e_date = earliest_salary_record.effective_date
+        
+        # Calendar-year calculation
+        years_worked = today.year - e_date.year - ((today.month, today.day) < (e_date.month, e_date.day))
+        
+        if current_salary is not None:
+            salary_growth = current_salary - earliest_salary_record.amount
+            
+    # 3. Promotion Count
+    promotion_count = db.query(models.Promotion).count()
+    
+    return {
+        "current_salary": current_salary,
+        "salary_growth": salary_growth,
+        "promotion_count": promotion_count,
+        "years_worked": years_worked
+    }
+
 
