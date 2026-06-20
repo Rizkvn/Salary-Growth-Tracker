@@ -143,5 +143,20 @@ def get_forecast(db: Session) -> dict:
         "forecast_3_year": forecast_3,
     }
 
+def get_all_salaries_for_export(db: Session):
+    return (
+        db.query(models.Salary)
+        .order_by(models.Salary.effective_date.asc(), models.Salary.id.asc())
+        .all()
+    )
+
+def get_all_promotions_for_export(db: Session):
+    return (
+        db.query(models.Promotion)
+        .order_by(models.Promotion.promotion_date.asc(), models.Promotion.id.asc())
+        .all()
+    )
+
+
 
 
