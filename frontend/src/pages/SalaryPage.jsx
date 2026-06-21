@@ -15,6 +15,7 @@ const SalaryPage = () => {
 
   const [salaryAmount, setSalaryAmount] = useState('');
   const [effectiveDate, setEffectiveDate] = useState('');
+  const [notes, setNotes] = useState('');
   
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -61,10 +62,12 @@ const SalaryPage = () => {
       setCreateError(false);
       await createSalary({
         amount: Number(salaryAmount),
-        effective_date: effectiveDate
+        effective_date: effectiveDate,
+        notes: notes.trim() || null
       });
       setSalaryAmount('');
       setEffectiveDate('');
+      setNotes('');
       setValidationErrors({});
       await fetchSalaries();
     } catch (err) {
@@ -125,6 +128,17 @@ const SalaryPage = () => {
             />
             {validationErrors.effectiveDate && <div className="validation-error">{validationErrors.effectiveDate}</div>}
           </div>
+          <div className="form-group">
+            <label htmlFor="notes">Notes</label>
+            <input 
+              type="text" 
+              id="notes" 
+              className="form-control"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              disabled={creating}
+            />
+          </div>
           <button 
             type="submit" 
             className="btn-add"
@@ -148,6 +162,7 @@ const SalaryPage = () => {
                 <th>ID</th>
                 <th>Salary</th>
                 <th>Effective Date</th>
+                <th>Notes</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -157,6 +172,7 @@ const SalaryPage = () => {
                   <td>{salary.id}</td>
                   <td>{formatCurrency(salary.amount)}</td>
                   <td>{salary.effective_date}</td>
+                  <td>{salary.notes || "-"}</td>
                   <td>
                     <button 
                       className="btn-delete"
@@ -170,7 +186,7 @@ const SalaryPage = () => {
               ))}
               {salaries.length === 0 && !listError && (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: 'center' }}>No salary records found.</td>
+                  <td colSpan="5" style={{ textAlign: 'center' }}>No salary records found.</td>
                 </tr>
               )}
             </tbody>

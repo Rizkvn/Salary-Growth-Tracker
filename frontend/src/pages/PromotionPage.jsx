@@ -160,6 +160,7 @@ const PromotionPage = () => {
                 <th>ID</th>
                 <th>TITLE</th>
                 <th>PROMOTION DATE</th>
+                <th>NOTES</th>
                 <th>ACTION</th>
               </tr>
             </thead>
@@ -169,6 +170,7 @@ const PromotionPage = () => {
                   <td>{promotion.id}</td>
                   <td>{promotion.title}</td>
                   <td>{promotion.promotion_date}</td>
+                  <td>{promotion.notes || "-"}</td>
                   <td>
                     <button 
                       className="btn-delete"
@@ -182,7 +184,7 @@ const PromotionPage = () => {
               ))}
               {promotions.length === 0 && !listError && (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: 'center' }}>No promotion records found.</td>
+                  <td colSpan="5" style={{ textAlign: 'center' }}>No promotion records found.</td>
                 </tr>
               )}
             </tbody>
