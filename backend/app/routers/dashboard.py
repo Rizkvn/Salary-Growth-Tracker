@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from .. import schemas, crud
+from .. import schemas, crud, auth
 from ..database import get_db
 
 router = APIRouter(
     prefix="/api/dashboard",
-    tags=["dashboard"]
+    tags=["dashboard"],
+    dependencies=[Depends(auth.get_current_user)],
 )
 
 @router.get("/", response_model=schemas.DashboardResponse)

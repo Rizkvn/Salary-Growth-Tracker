@@ -60,7 +60,9 @@ def get_dashboard_metrics(db: Session):
     current_salary = current_salary_record.amount if current_salary_record else None
     
     # 2. Earliest Salary
-    earliest_salary_record = db.query(models.Salary).order_by(
+    earliest_salary_record = db.query(models.Salary).filter(
+        models.Salary.effective_date <= today
+    ).order_by(
         models.Salary.effective_date.asc(),
         models.Salary.id.asc()
     ).first()
@@ -72,13 +74,15 @@ def get_dashboard_metrics(db: Session):
         e_date = earliest_salary_record.effective_date
         
         # Calendar-year calculation
-        years_worked = today.year - e_date.year - ((today.month, today.day) < (e_date.month, e_date.day))
+        years_worked = max(0, today.year - e_date.year - ((today.month, today.day) < (e_date.month, e_date.day)))
         
         if current_salary is not None:
             salary_growth = current_salary - earliest_salary_record.amount
             
     # 3. Promotion Count
-    promotion_count = db.query(models.Promotion).count()
+    promotion_count = db.query(models.Promotion).filter(
+        models.Promotion.promotion_date <= today
+    ).count()
     
     return {
         "current_salary": current_salary,

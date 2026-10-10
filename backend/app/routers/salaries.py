@@ -2,12 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from .. import schemas, crud
+from .. import schemas, crud, auth
 from ..database import get_db
 
 router = APIRouter(
     prefix="/api/salaries",
-    tags=["Salaries"]
+    tags=["Salaries"],
+    dependencies=[Depends(auth.get_current_user)],
 )
 
 @router.get("/", response_model=List[schemas.SalaryResponse])

@@ -5,12 +5,13 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
-from .. import crud
+from .. import crud, auth
 from ..database import get_db
 
 router = APIRouter(
     prefix="/api/export",
-    tags=["export"]
+    tags=["export"],
+    dependencies=[Depends(auth.get_current_user)],
 )
 
 @router.get("/csv")
