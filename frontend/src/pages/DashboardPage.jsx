@@ -1,33 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getDashboard, getForecast } from '../services/dashboardService';
+import { getSalaries } from '../services/salaryService';
 import StatCard from '../components/dashboard/StatCard';
+import SalaryGrowthChart from '../components/dashboard/SalaryGrowthChart';
 import { formatCurrency, formatNumberOrNA } from '../utils/formatCurrency';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
   const [metrics, setMetrics] = useState(null);
   const [forecast, setForecast] = useState(null);
+  const [salaries, setSalaries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [dashboardData, forecastData] = await Promise.all([
+        const [dashboardData, forecastData, salaryData] = await Promise.all([
           getDashboard(),
-          getForecast()
+          getForecast(),
+          getSalaries(),
         ]);
-        setMetrics(dashboardData);
-        setForecast(forecastData);
-      } catch (err) {
-        setError(true);
+        if (isMounted) {
+          setMetrics(dashboardData);
+          setForecast(forecastData);
+          setSalaries(salaryData || []);
+        }
+      } catch {
+        if (isMounted) {
+          setError(true);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (loading) {
@@ -48,20 +63,29 @@ const DashboardPage = () => {
           <StatCard 
             label="Current Salary" 
             value={formatCurrency(metrics?.current_salary)} 
+            data-testid="stat-current-salary"
           />
           <StatCard 
             label="Salary Growth" 
             value={formatCurrency(metrics?.salary_growth)} 
+            data-testid="stat-salary-growth"
           />
           <StatCard 
             label="Promotion Count" 
             value={formatNumberOrNA(metrics?.promotion_count)} 
+            data-testid="stat-promotion-count"
           />
           <StatCard 
             label="Years Worked" 
             value={formatNumberOrNA(metrics?.years_worked)} 
+            data-testid="stat-years-worked"
           />
         </div>
+      </div>
+
+      <div className="dashboard-section">
+        <h3 className="section-title">Salary Growth Chart</h3>
+        <SalaryGrowthChart salaries={salaries} loading={loading} error={error} />
       </div>
 
       <div className="dashboard-section">

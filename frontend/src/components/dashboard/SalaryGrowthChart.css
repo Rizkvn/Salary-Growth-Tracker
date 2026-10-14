@@ -1,0 +1,270 @@
+.salary-chart-card {
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.salary-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.salary-chart-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.salary-chart-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* SVG Chart Container */
+.salary-chart-wrapper {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.salary-chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Grid & Axes */
+.chart-grid-line {
+  stroke: #f1f5f9;
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.chart-axis-line {
+  stroke: #cbd5e1;
+  stroke-width: 1;
+}
+
+.chart-axis-label {
+  font-size: 11px;
+  fill: #64748b;
+  font-family: inherit;
+}
+
+.chart-axis-label-x {
+  font-size: 11px;
+  fill: #475569;
+  font-family: inherit;
+}
+
+/* Chart Paths */
+.chart-area-path {
+  fill: url(#salaryGrowthGradient);
+}
+
+.chart-line-path {
+  fill: none;
+  stroke: #2563eb;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Interactive Points */
+.chart-point-group {
+  cursor: pointer;
+  outline: none;
+}
+
+.chart-point-circle {
+  fill: #2563eb;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  transition: r 0.2s ease, fill 0.2s ease;
+}
+
+.chart-point-group:hover .chart-point-circle,
+.chart-point-group:focus .chart-point-circle,
+.chart-point-group.active .chart-point-circle {
+  r: 6.5;
+  fill: #1d4ed8;
+  stroke: #ffffff;
+  stroke-width: 3;
+}
+
+.chart-guide-line {
+  stroke: #94a3b8;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+
+/* Tooltip */
+.chart-tooltip-box {
+  position: absolute;
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+  z-index: 20;
+  min-width: 160px;
+  transform: translate(-50%, -115%);
+  transition: left 0.1s ease-out, top 0.1s ease-out;
+}
+
+.chart-tooltip-date {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.chart-tooltip-amount {
+  font-size: 15px;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 4px;
+}
+
+.chart-tooltip-diff {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.chart-tooltip-diff.increase {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.chart-tooltip-diff.decrease {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.chart-tooltip-diff.neutral {
+  background-color: rgba(148, 163, 184, 0.2);
+  color: #cbd5e1;
+}
+
+.chart-tooltip-notes {
+  font-size: 11px;
+  color: #cbd5e1;
+  font-style: italic;
+  margin-top: 4px;
+  border-top: 1px solid #334155;
+  padding-top: 4px;
+}
+
+/* States: Loading, Empty, Single-point, Error */
+.chart-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.chart-state-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.chart-state-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.chart-state-desc {
+  font-size: 13px;
+  color: #64748b;
+  max-width: 440px;
+  line-height: 1.5;
+}
+
+.chart-single-point-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px 24px;
+  margin: 16px 0;
+  display: inline-block;
+  text-align: left;
+}
+
+.chart-single-point-label {
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chart-single-point-val {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 4px 0;
+}
+
+.chart-single-point-date {
+  font-size: 13px;
+  color: #475569;
+}
+
+/* Skeleton Loading */
+.chart-skeleton-bar {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.5s infinite;
+  border-radius: 6px;
+}
+
+@keyframes skeletonPulse {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .salary-chart-card {
+    padding: 16px;
+  }
+
+  .salary-chart-title {
+    font-size: 16px;
+  }
+
+  .chart-axis-label {
+    font-size: 9px;
+  }
+
+  .chart-axis-label-x {
+    font-size: 9px;
+  }
+}
