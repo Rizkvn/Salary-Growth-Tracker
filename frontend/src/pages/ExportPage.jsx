@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { downloadCombinedReport } from '../services/exportService';
 import './ExportPage.css';
 
@@ -28,7 +28,7 @@ const ExportPage = () => {
       await downloadCombinedReport();
       
       setSuccess(`${typeLabel} exported successfully.`);
-    } catch (err) {
+    } catch {
       setError(`Failed to export ${typeLabel.toLowerCase()}.`);
     } finally {
       setIsExporting(false);

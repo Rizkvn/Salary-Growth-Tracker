@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContextDef';
 
 const LoginPage = () => {
   const [password, setPassword] = useState('');
@@ -17,7 +17,7 @@ const LoginPage = () => {
     try {
       await login(password);
       navigate('/dashboard');
-    } catch (err) {
+    } catch {
       setError('Login failed. Please check your password.');
     } finally {
       setIsLoading(false);

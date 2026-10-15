@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getPromotions, createPromotion, deletePromotion } from '../services/promotionService';
 import './PromotionPage.css';
 
@@ -24,7 +24,7 @@ const PromotionPage = () => {
       setListError(false);
       const data = await getPromotions();
       setPromotions(data);
-    } catch (err) {
+    } catch {
       setListError(true);
     } finally {
       setLoading(false);
@@ -32,7 +32,18 @@ const PromotionPage = () => {
   };
 
   useEffect(() => {
-    fetchPromotions();
+    (async () => {
+      try {
+        setLoading(true);
+        setListError(false);
+        const data = await getPromotions();
+        setPromotions(data);
+      } catch {
+        setListError(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
   const handleCreate = async (e) => {
@@ -67,7 +78,7 @@ const PromotionPage = () => {
       setNotes('');
       setValidationErrors({});
       await fetchPromotions();
-    } catch (err) {
+    } catch {
       setCreateError(true);
     } finally {
       setCreating(false);
@@ -84,7 +95,7 @@ const PromotionPage = () => {
       setDeleteError(false);
       await deletePromotion(id);
       await fetchPromotions();
-    } catch (err) {
+    } catch {
       setDeleteError(true);
     } finally {
       setDeletingId(null);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getSalaries, createSalary, deleteSalary } from '../services/salaryService';
 import { formatCurrency } from '../utils/formatCurrency';
 import './SalaryPage.css';
@@ -25,7 +25,7 @@ const SalaryPage = () => {
       setListError(false);
       const data = await getSalaries();
       setSalaries(data);
-    } catch (err) {
+    } catch {
       setListError(true);
     } finally {
       setLoading(false);
@@ -33,7 +33,18 @@ const SalaryPage = () => {
   };
 
   useEffect(() => {
-    fetchSalaries();
+    (async () => {
+      try {
+        setLoading(true);
+        setListError(false);
+        const data = await getSalaries();
+        setSalaries(data);
+      } catch {
+        setListError(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
   const handleCreate = async (e) => {
@@ -70,7 +81,7 @@ const SalaryPage = () => {
       setNotes('');
       setValidationErrors({});
       await fetchSalaries();
-    } catch (err) {
+    } catch {
       setCreateError(true);
     } finally {
       setCreating(false);
@@ -87,7 +98,7 @@ const SalaryPage = () => {
       setDeleteError(false);
       await deleteSalary(id);
       await fetchSalaries();
-    } catch (err) {
+    } catch {
       setDeleteError(true);
     } finally {
       setDeletingId(null);
